@@ -79,7 +79,7 @@ Slurm consists of a slurmd daemon running on each compute node and a central slu
 
 Where nodes are the compute resource in Slurm, partitions are the group of nodes into logical (possibly overlapping) sets, jobs are the allocations of resources assigned to a user for a specified amount of time, and job steps are the sets of (possibly parallel) tasks within a job. Note that the Slurm partitions can be considered job queues, each of which has an assortment of constraints such as job size limit, job time limit, users permitted to use it, etc.
 
-# Example: Submitting a job in SLURM is performed by running sbatch command and specifying a job script.
+## Example: Submitting a job in SLURM is performed by running sbatch command and specifying a job script.
 ```
   sbatch slurmjob.script
 ```
@@ -115,6 +115,45 @@ squeue -u [USERID]
 If you want to check the status of a single job:
 ```
 scontrol show job [JOBID]
+```
+
+## Example: Slurm distributed MPI and GPU jobs
+
+An MPI job can considered as a cross-node and multi-process job. Sample Slurm MPI job script would look like below:
+
+```
+#!/bin/bash
+ 
+#SBATCH --job-name=MyJob
+#SBATCH --account=username
+#SBATCH --ntasks=32
+#SBATCH --ntasks-per-node=16
+#SBATCH --cpus-per-tasks=1
+ 
+module load openmpi
+mpiexec <your program>
+```
+
+The script above tells Slurm that this is a multi-processing job. It requests a total of 32 MPI processes (ntasks=32). It will launch 16 MPI processess (ntasks-per-node=16) on each node (it implicitly requested 2 nodes). For each MPI process, it needs 1 cpu core to handle (cpus-per-task=1).
+
+GPU jobs
+If you need 6 nodes with 4 cpu cores (ntasks=24 and ntasks-per-node=4) and 2 GPUs (gres=gpu:2) on each node, then the slurm submission script should look like:
+
+```
+#!/bin/bash
+ 
+#SBATCH --job-name=MyJob
+#SBATCH --account=username
+#SBATCH --time=01:00:00
+#SBATCH --ntasks=24
+#SBATCH --ntasks-per-node=4
+#SBATCH --cpus-per-task=1
+#SBATCH --gres=gpu:2
+ 
+module load openmpi
+module load cuda
+ 
+mpiexec <your program>
 ```
 
 # References
