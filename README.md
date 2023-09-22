@@ -79,6 +79,44 @@ Slurm consists of a slurmd daemon running on each compute node and a central slu
 
 Where nodes are the compute resource in Slurm, partitions are the group of nodes into logical (possibly overlapping) sets, jobs are the allocations of resources assigned to a user for a specified amount of time, and job steps are the sets of (possibly parallel) tasks within a job. Note that the Slurm partitions can be considered job queues, each of which has an assortment of constraints such as job size limit, job time limit, users permitted to use it, etc.
 
+# Example: Submitting a job in SLURM is performed by running sbatch command and specifying a job script.
+```
+  sbatch slurmjob.script
+```
+A simple example of a Slurm job submission script:
+```
+#!/bin/bash
+#SBATCH --job-name=MyJob
+#SBATCH --account=monash001
+#SBATCH --time=01:00:00
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+ 
+./helloworld
+```
+This script describe the information of the job: it is a serial job with only one process (--ntasks=1). It only need one cpu core to run such process.
+
+To cancel a job:
+```
+scancel [JOBID]
+```
+
+To cancel all jobs for a specific user:
+```
+scancel -u [USERID]
+```
+
+To check all your running/pending jobs:
+
+```
+squeue -u [USERID]
+```
+
+If you want to check the status of a single job:
+```
+scontrol show job [JOBID]
+```
+
 # References
 
 - https://www.udemy.com/course/learn-to-use-hpc-systems-and-supercomputers
