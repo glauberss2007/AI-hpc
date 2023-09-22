@@ -73,6 +73,11 @@ The Slurm Workload Manager (formerly known as Simple Linux Utility for Resource 
 
 Slurm consists of a slurmd daemon running on each compute node and a central slurmctld daemon running on a management/master node. The slurmd daemons provide fault-tolerant hierarchical communications. The user commands include: sacct, salloc, sattach, sbatch, sbcast, scancel, scontrol, sinfo, smap, squeue, srun, strigger and sview. All of the commands can run anywhere in the cluster and a detailed description of each one can be founded at [](slurm-comands).
 
+## Alurm Entities
+
+![image](https://github.com/glauberss2007/ScyCom-ParallelDistributed/assets/22028539/e1e48c87-8d68-462a-b641-f7ebd0896075)
+
+Where nodes are the compute resource in Slurm, partitions are the group of nodes into logical (possibly overlapping) sets, jobs are the allocations of resources assigned to a user for a specified amount of time, and job steps are the sets of (possibly parallel) tasks within a job. Note that the Slurm partitions can be considered job queues, each of which has an assortment of constraints such as job size limit, job time limit, users permitted to use it, etc.
 
 # References
 
