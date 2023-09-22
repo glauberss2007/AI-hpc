@@ -76,6 +76,8 @@ Slurm consists of a slurmd daemon running on each compute node and a central slu
 
 # References
 
+- https://www.udemy.com/course/learn-to-use-hpc-systems-and-supercomputers
+- https://slurm.schedmd.com/quickstart.html
 - https://gordonbell.azurewebsites.net/MSR-TR-2015-2_Supercomputers-The_Amazing_Race_Bell.pdf
 - https://www-users.york.ac.uk/~mijp1/teaching/4th_year_HPC/lecture_notes/History_of_Supercomputers.pdf
 - https://www.top500.org/lists/
