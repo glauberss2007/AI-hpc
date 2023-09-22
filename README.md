@@ -37,6 +37,45 @@ An HPC node is based on
 
 PS: Monitoring NODEs can be done based on softwares like "OSCAR" (free), "Bright" and "MS HPC Cluster Manager"
 
+# HPC Access, Data Transfer and software list
+
+- Commands and descriptions are in [](usefull-commands).
+
+- Softwares normally used on HPC environment are in the [](hpc-software-list).
+
+# HPC Job Schedulers Software (SLURMS and PBS)
+
+In the arena of HPC, we talk a lot about jobs, these are simply commands we wish to run and requests for resources (e.g. compute time, disk space, memory amount, software environments etc.). HPC jobs are generally time consuming and resource intensive run non-interactively. However, they nan be run interactively, but mainly for testing purposes.You need add your jobs to a queue and when machines have free resources jobs run. Once jobs are complete, you can inspect their output.
+
+The batch system is a program (typically resides on the head node) that lets you add and remove jobs from the queue and monitor the queue. It’s a script/command line driven program. The Job schedulers manages job queues. Typically, the scheduler will schedule jobs from the queue as sufficient resources (more precisely - cluster compute nodes) become idle. You do not need to interact with schedulers directly.
+
+Some widely used cluster batch systems are:
+
+1. Portable Batch System (PBS)
+2. Simple Linux Utility for Resource Management (SLURM)
+3. Moab
+4. Univa Grid Engine
+5. LoadLeveler, Condor
+6. OpenLava
+7. IBM’s Platform LSF
+
+The first two in the above list will be considered here.
+
+# Slurm Workload Manager
+
+The Slurm Workload Manager (formerly known as Simple Linux Utility for Resource Management or SLURM), is a free and open-source job scheduler for Linux and Unix-like kernels, used by many of the world’s supercomputers and computer clusters. It provides three key functions:
+
+1. First, it allocates exclusive and/or non-exclusive access to resources (computer nodes) to users for some duration of time so they can perform work.
+2. Second, it provides a framework for starting, executing, and monitoring work (typically a parallel job such as MPI) on a set of allocated nodes.
+3. Finally, it arbitrates contention for resources by managing a queue of pending jobs.
+
+![image](https://github.com/glauberss2007/ScyCom-ParallelDistributed/assets/22028539/1c804b17-9987-4cc4-8170-83b91ae94c04)
+
+Slurm consists of a slurmd daemon running on each compute node and a central slurmctld daemon running on a management/master node. The slurmd daemons provide fault-tolerant hierarchical communications. The user commands include: sacct, salloc, sattach, sbatch, sbcast, scancel, scontrol, sinfo, smap, squeue, srun, strigger and sview. All of the commands can run anywhere in the cluster and a detailed description of each one can be founded at [](slurm-comands).
+
+
+# References
+
 - https://gordonbell.azurewebsites.net/MSR-TR-2015-2_Supercomputers-The_Amazing_Race_Bell.pdf
 - https://www-users.york.ac.uk/~mijp1/teaching/4th_year_HPC/lecture_notes/History_of_Supercomputers.pdf
 - https://www.top500.org/lists/
