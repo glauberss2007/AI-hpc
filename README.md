@@ -236,6 +236,7 @@ Now we can submit the job Beta script and tell Slurm to run Job Beta when the jo
 
 # References
 
+- https://drtailor.medium.com/how-to-setup-slurm-on-ubuntu-20-04-for-single-node-work-scheduling-6cc909574365
 - https://www.udemy.com/course/learn-to-use-hpc-systems-and-supercomputers
 - https://slurm.schedmd.com/quickstart.html
 - https://gordonbell.azurewebsites.net/MSR-TR-2015-2_Supercomputers-The_Amazing_Race_Bell.pdf
