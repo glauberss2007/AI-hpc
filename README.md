@@ -156,6 +156,84 @@ module load cuda
 mpiexec <your program>
 ```
 
+## Slurm Multi-threaded OpenMP Jobs
+
+Multi-threading is a type of execution model that allows multiple threads to exist within the context of a process. Simply speaking, a Slurm multi-threading job is a singler process, multi-core job. Many application can drop to this category: OpenMP program codes, Matlab scripts with Parallel Computing Toolbox, etc.
+
+A sample Slurm Multi-threading job would look like below:
+
+```
+#!/bin/bash 
+#SBATCH --job-name=MyJob
+#SBATCH --account=monash001
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+     
+./openmp_helloworld.exe
+```
+
+This script tells Slurm it is a multi-threading job. It only has only 1 process (ntasks=1), where for such process it needs 8 cpu cores (cpus-per-task=8) to handle.
+
+## Slurm Interactive Jobs
+
+Slurm interactive sessions allows you to connect to a compute node and work on that node directly. This allows you to develop how your jobs might run e.g., test that commands run as expected before putting them into a script and do heavy development tasks that cannot be done on the login nodes.
+
+To launch an interactive job (using default values, e.g., ntask=1 (1 cpu core), mem=1G, t=24hrs) here is the command:
+```
+    sinteractive --acount=username
+```
+If you want to change default time to 3 days:
+```
+    sinteractive --account=username --time=3-00:00:00
+```
+If you need multi-core (e.g., 2 CPU cores):
+```
+    sinteractive --account=username --ntasks=2
+```
+If you need GPU cards per 2 CPUs:
+```
+    sinteractive --account=username --ntasks=2 --gres=gpu:2
+```
+Therefore, an interactive job will not be automatically terminate unless user manually quit the session. To quit it, type: exit or scancel [JOB ID].
+
+## Slurm Array Jobs
+Slurm job dependencies
+
+A Slurm job can be given the constraint that it only starts after another job has finished. Let have an example with two Jobs, named Alpha and Beta. We want Job Beta to start after Job Alpha has successfully completed. First, let’s submit the job Alpha script:
+
+    sbatch jobAlpha.script
+    Waiting for JOBID 44234 to start
+
+Now we can submit the job Beta script and tell Slurm to run Job Beta when the job Alpha completes:
+
+    sbatch --dependency=afterok:44234 jobBeta.script 
+    sbatch --dependency=afterany:44234 jobBeta.script // Run job Beta regardlessly
+Job array allows you to run a group of identical/similar jobs. To do that, just add the following statement in your submission script:
+```
+    #SBATCH --array=1-10
+```
+You can also do this during submission without modify your job script:
+```
+    sbatch --array=1-10 job.script
+```
+The job array is implemented as a group of single jobs, e.g., if you submit an array job with #SBATCH --array=1-10. When the starting job is ID=1000, the ids of all jobs are: 1000, 1001, 1002, 1003 and so on.
+
+Note tha the Slurm script is should exactly be the same. The only difference is between each subjob the environment variable, $SLURM_ARRAY_TASK_ID will have a different value. Therefore, it would allow you to do some data level parallelization e.g., let subjob-1 (SLURM_ARRAY_TASK_ID=1) process datachunk-1, subjob-2 processes datachunk-2,…, etc.
+
+## Slurm job dependencies
+
+A Slurm job can be given the constraint that it only starts after another job has finished. Let have an example with two Jobs, named Alpha and Beta. We want Job Beta to start after Job Alpha has successfully completed. First, let’s submit the job Alpha script:
+```
+    sbatch jobAlpha.script
+    Waiting for JOBID 44234 to start
+```
+Now we can submit the job Beta script and tell Slurm to run Job Beta when the job Alpha completes:
+```
+    sbatch --dependency=afterok:44234 jobBeta.script 
+    sbatch --dependency=afterany:44234 jobBeta.script // Run job Beta regardlessly
+```
+
+
 # References
 
 - https://www.udemy.com/course/learn-to-use-hpc-systems-and-supercomputers
