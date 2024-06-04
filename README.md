@@ -39,9 +39,9 @@ High Performance Computing (HPC) architecture integrates multiple computing reso
 Create 2 virtual linux servers with names "hpc-head" and "node001". Use the vagrant file attached to deploy it in automatic way:
 
 Execute it inside vagrant folder:
-´´´´
+```
 vagrant up
-´´´´
+```
 
 It will automatically deploy both VMs with the network configured properly nad HPC software installed.
 
