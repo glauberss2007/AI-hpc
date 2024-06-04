@@ -181,6 +181,251 @@ The first two, PBS and SLURM, are widely used!!
 
 - **Simple Linux Utility for Resource Management (SLURM)**: SLURM is another popular batch system designed for high-performance computing clusters. It offers robust job scheduling and workload management features, including job prioritization, fair resource allocation, and efficient job execution. SLURM is known for its scalability and flexibility, making it suitable for large-scale HPC environments.
 
+## SLURM
+
+Slurm is an open-source job scheduler designed for Linux and Unix-like kernels. It is widely used in supercomputers and clusters worldwide, providing essential functions for workload management.
+
+### Key Functions
+
+Slurm serves three primary functions:
+
+1. **Resource Allocation:** Allocates exclusive and/or non-exclusive access to computing resources (nodes) for users over a specified duration.
+2. **Job Execution:** Provides a framework for starting, executing, and monitoring parallel jobs (e.g., MPI) on allocated nodes.
+3. **Contention Management:** Arbitrates contention for resources by managing a queue of pending jobs.
+
+### History
+
+Initially developed in the 2010s, Slurm emerged from a collaborative effort involving Lawrence Livermore National Laboratory, SchedMD, Linux NetworX, Hewlett-Packard, and Groupe Bull. It was inspired by the closed-source Quadrics RMS and shares similar syntax. The name "Slurm" is a playful reference to a fictional soda in the TV show Futurama.
+
+### Components
+
+Slurm consists of two primary daemons:
+- **slurmd:** Runs on each compute node, providing fault-tolerant hierarchical communications.
+- **slurmctld:** Runs on a central management/master node, coordinating overall cluster operations.
+
+### Entities
+
+In Slurm, workload management revolves around four entities:
+- **Nodes:** Compute resources within the system.
+- **Partitions:** Logical sets of nodes (similar to queues in other systems) with various constraints.
+- **Jobs:** Allocations of resources assigned to users for a specified duration.
+- **Job Steps:** Sets of tasks, possibly parallel, within a job.
+
+Slurm partitions function as job queues, each with specific constraints such as job size limits, time limits, and permitted users.
+
+![image](https://github.com/glauberss2007/AI-hpc/assets/22028539/accbd5e2-b30e-4ff5-a362-849bb06fae9f)
+
+### Slurm Command
+
+Slurm offers a range of commands to interact with its daemons and manage jobs efficiently:
+
+- **sacct:** Reports job or job step accounting information about active or completed jobs.
+- **salloc:** Allocates resources for a job in real-time.
+- **sattach:** Attaches standard input, output, and error plus signal capabilities to a currently running job or job step.
+- **sbatch:** Submits a job script for later execution, typically containing one or more srun commands to launch parallel tasks.
+- **sbcast:** Transfers a file from local disk to local disk on nodes allocated to a job.
+- **scancel:** Cancels a pending or running job or job step, or sends an arbitrary signal to all associated processes.
+- **scontrol:** The administrative tool for viewing and/or modifying Slurm state, often requiring root privileges.
+- **sinfo:** Reports the state of partitions and nodes managed by Slurm, with filtering, sorting, and formatting options.
+- **smap:** Reports state information graphically for jobs, partitions, and nodes, reflecting network topology.
+- **squeue:** Reports the state of jobs or job steps with filtering, sorting, and formatting options, prioritizing running and pending jobs.
+- **srun:** Submits a job for execution or initiates job steps in real-time.
+- **strigger:** Sets, gets, or views event triggers, such as nodes going down or jobs approaching their time limit.
+- **sview:** A graphical user interface for getting and updating state information for jobs, partitions, and nodes managed by Slurm.
+
+These commands facilitate efficient management and monitoring of jobs within Slurm.
+
+### Example of a Simple Slurm Job
+
+Submitting a job in Slurm is done by running the `sbatch` command and specifying a job script.
+
+```bash
+sbatch slurmjob.script
+```
+
+Here's a simple example of a Slurm job submission script:
+
+```bash
+#!/bin/bash
+#SBATCH --job-name=MyJob
+#SBATCH --account=monash001
+#SBATCH --time=01:00:00
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+
+./helloworld
+```
+
+This script describes the information of the job:
+- It's a serial job with only one process (`--ntasks=1`).
+- It requires one CPU core to run (`--cpus-per-task=1`).
+
+To cancel a job:
+```bash
+scancel [JOBID]
+```
+
+To cancel all jobs for a specific user:
+```bash
+scancel -u [USERID]
+```
+
+To check all your running/pending jobs:
+```bash
+squeue -u [USERID]
+```
+
+To check the status of a single job:
+```bash
+scontrol show job [JOBID]
+```
+
+### Slurm Distributed MPI and GPU Jobs
+
+An MPI job can be considered as a cross-node and multi-process job. A sample Slurm MPI job script would look like the following:
+
+```bash
+#!/bin/bash
+
+#SBATCH --job-name=MyJob
+#SBATCH --account=username
+#SBATCH --ntasks=32
+#SBATCH --ntasks-per-node=16
+#SBATCH --cpus-per-task=1
+
+module load openmpi
+mpiexec <your program>
+```
+
+In the script above, Slurm is informed that this is a multi-processing job. It requests a total of 32 MPI processes (`ntasks=32`). It will launch 16 MPI processes (`ntasks-per-node=16`) on each node (implicitly requesting 2 nodes). For each MPI process, it requires 1 CPU core to handle (`cpus-per-task=1`).
+
+If you need 6 nodes with 4 CPU cores (`ntasks=24` and `ntasks-per-node=4`) and 2 GPUs (`gres=gpu:2`) on each node, then the Slurm submission script should look like:
+
+```bash
+#!/bin/bash
+
+#SBATCH --job-name=MyJob
+#SBATCH --account=username
+#SBATCH --time=01:00:00
+#SBATCH --ntasks=24
+#SBATCH --ntasks-per-node=4
+#SBATCH --cpus-per-task=1
+#SBATCH --gres=gpu:2
+
+module load openmpi
+module load cuda
+
+mpiexec <your program>
+```
+
+### Slurm Multi-threaded OpenMP Jobs
+
+Multi-threading allows multiple threads to exist within the context of a single process. In Slurm, a multi-threaded job typically refers to a single-process, multi-core job. This category includes various applications like OpenMP program codes and Matlab scripts with Parallel Computing Toolbox.
+
+Here's a sample Slurm script for a Multi-threaded job:
+
+```bash
+#!/bin/bash
+
+#SBATCH --job-name=MyJob
+#SBATCH --account=monash001
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+
+./openmp_helloworld.exe
+```
+
+In this script:
+- `--job-name=MyJob`: Specifies the name of the job.
+- `--account=monash001`: Indicates the account associated with the job.
+- `--ntasks=1`: Specifies the number of tasks (processes) needed for the job.
+- `--cpus-per-task=8`: Specifies the number of CPU cores required for each task (thread).
+
+This script informs Slurm that it is a multi-threading job with only 1 process (`ntasks=1`), and each process requires 8 CPU cores to handle (`cpus-per-task=8`).
+
+### Slurm Interactive Jobs
+
+Interactive jobs in Slurm provide users with direct access to a compute node for interactive development, testing, or debugging tasks. Here's how to launch and manage interactive jobs using Slurm:
+
+1. **Launching an Interactive Job**:
+   - To launch an interactive job with default values (1 CPU core, 1GB memory, 24 hours duration), use the following command:
+     ```
+     sinteractive --account=username
+     ```
+   - To customize the interactive job, you can specify parameters such as duration, number of CPU cores, and GPU requirements:
+     - Change the duration to 3 days:
+       ```
+       sinteractive --account=username --time=3-00:00:00
+       ```
+     - Specify the number of CPU cores (e.g., 2 cores):
+       ```
+       sinteractive --account=username --ntasks=2
+       ```
+     - Request GPU cards along with CPU cores (e.g., 2 GPUs for 2 CPUs):
+       ```
+       sinteractive --account=username --ntasks=2 --gres=gpu:2
+       ```
+
+2. **Managing Interactive Jobs**:
+   - An interactive job will not automatically terminate unless the user manually exits the session.
+   - To exit the interactive session, simply type `exit`.
+   - Alternatively, you can cancel the interactive job using its job ID with the command `scancel [JOB ID]`.
+
+Interactive jobs are useful for tasks that require direct access to compute resources and cannot be easily performed on login nodes. They allow users to interactively develop and test job scripts or execute tasks that require significant computational resources.
+
+### Slurm array jobs
+
+Slurm array jobs enable the execution of a group of identical or similar jobs, each with a unique identifier. Here's how to use Slurm array jobs:
+
+1. **Defining the Job Array**:
+   - In your submission script, add the following statement to define the job array:
+     ```
+     #SBATCH --array=1-10
+     ```
+   - Alternatively, you can specify the job array during submission without modifying your script:
+     ```
+     sbatch --array=1-10 job.script
+     ```
+
+2. **Job Array Implementation**:
+   - Slurm implements the job array as a group of individual jobs, each with a unique job ID.
+   - For example, if you submit an array job with `#SBATCH --array=1-10` and the starting job ID is 1000, the job IDs of all jobs will be 1000, 1001, 1002, 1003, and so on.
+
+3. **Job Script Configuration**:
+   - The job script for each subjob in the array should be identical.
+   - You can use the environment variable `$SLURM_ARRAY_TASK_ID` within the job script to differentiate between subjobs.
+   - This allows for data-level parallelization, where each subjob can process a different data chunk or perform a specific task.
+
+By leveraging Slurm array jobs, you can efficiently execute multiple instances of a job with varying parameters or input data, facilitating tasks such as parameter sweeps, Monte Carlo simulations, or data processing pipelines.
+
+### Slurm job dependence
+
+Slurm job dependencies allow you to specify that a job should only start after another job has completed successfully. Here's how to use Slurm job dependencies with an example involving two jobs named Alpha and Beta:
+
+1. **Submitting Job Alpha**:
+   - Submit the Job Alpha script:
+     ```
+     sbatch jobAlpha.script
+     ```
+   - Note the JOBID assigned to Job Alpha (e.g., JOBID 44234).
+
+2. **Submitting Job Beta with Dependency**:
+   - Submit the Job Beta script and specify the dependency on Job Alpha's completion:
+     ```
+     sbatch --dependency=afterok:44234 jobBeta.script
+     ```
+   - This command tells Slurm to run Job Beta only after Job Alpha has completed successfully (`afterok` dependency).
+
+3. **Alternative Dependency Options**:
+   - If you want Job Beta to start regardless of the outcome of Job Alpha, you can use:
+     ```
+     sbatch --dependency=afterany:44234 jobBeta.script
+     ```
+   - This command instructs Slurm to run Job Beta regardless of the outcome of Job Alpha (`afterany` dependency).
+
+By setting job dependencies in Slurm, you can establish execution sequences and ensure that jobs are executed in the desired order based on their completion status.
+
+## PBS - Portable batch system
 
 ## References
 
