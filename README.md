@@ -1,173 +1,92 @@
 # High Performance Computing (HPC) Systems Project
 
-Welcome to the High Performance Computing (HPC) Systems project repository. The main goal of this project is to introduce you to HPC systems and their software stack. This repository is designed to help you utilize parallel and distributed programming, as well as computing resources, to solve complex problems using HPC systems and supercomputers. This knowledge can be applied in fields such as machine learning, deep learning, data science, big data, and more.
+Welcome to the High Performance Computing (HPC) Systems project repository. This project aims to introduce you to HPC systems and their software stack, empowering you to leverage parallel and distributed programming along with computing resources to solve complex problems across various domains such as machine learning, deep learning, data science, big data, and more.
 
 ## HPC Architecture
 
-High Performance Computing (HPC) architecture integrates multiple computing resources to deliver high computational power. An HPC cluster consists of several components, each playing a vital role in ensuring efficient operation.
+High Performance Computing (HPC) architecture integrates multiple computing resources to deliver high computational power. An HPC cluster comprises several components, each crucial for ensuring efficient operation.
 
-![image](https://github.com/glauberss2007/AI-hpc/assets/22028539/eb0558d5-ebd3-4b90-9118-430a19a3fa88)
+![HPC Architecture Diagram](https://github.com/glauberss2007/AI-hpc/assets/22028539/eb0558d5-ebd3-4b90-9118-430a19a3fa88)
 
 ### Components of HPC Architecture
 
-1. **Compute Nodes**
-   - **Function:** Perform the actual computation tasks.
-   - **Description:** These are the main workhorses of an HPC system, equipped with powerful CPUs and sometimes GPUs for parallel processing.
+1. **Compute Nodes**: These nodes execute computation tasks, equipped with powerful CPUs and sometimes GPUs for parallel processing.
+2. **Login Nodes**: Serve as the user interface for accessing the HPC system, where users submit jobs, compile code, and manage data.
+3. **Management Node (Master/Head Node)**: Manages cluster operations, including job scheduling, resource allocation, and overall cluster management.
+4. **Storage Nodes**: Dedicated to storing data used and produced by compute tasks, often utilizing high-speed storage solutions.
+5. **Ethernet Switches**: Facilitate node-to-node communication at speeds of 1/10 GB.
+6. **Infiniband Switches**: Enable faster inter-node communication at speeds of 56/100 GB, crucial for MPI-enabled software.
 
-2. **Login Nodes**
-   - **Function:** User interface for accessing the HPC system.
-   - **Description:** Nodes where users log in to submit jobs, compile code, and manage data.
+### Setting Up an HPC Environment Using VMWare (Demo)
 
-3. **Management Node (Master/Head Node)**
-   - **Function:** Manages the overall cluster operations.
-   - **Description:** Handles job scheduling, resource allocation, and overall cluster management.
+To create a small HPC environment, deploy 2 virtual Linux servers named "hpc-head" and "node001" using the provided Vagrant file:
 
-4. **Storage Nodes**
-   - **Function:** Provide data storage solutions.
-   - **Description:** Nodes dedicated to storing the data used and produced by compute tasks, often using high-speed storage solutions.
-
-5. **Ethernet Switches**
-   - **Function:** Facilitate node-to-node communication.
-   - **Description:** Provide necessary communication infrastructure between nodes, typically at speeds of 1/10 GB.
-
-6. **Infiniband Switches**
-   - **Function:** Enable faster inter-node communication.
-   - **Description:** Used for high-speed networking (56/100 GB), particularly important for MPI-enabled software.
-
-### Creating an small HPC env using VMWare (demo)
-
-Create 2 virtual linux servers with names "hpc-head" and "node001". Use the vagrant file attached to deploy it in automatic way:
-
-Execute it inside vagrant folder:
-```
+```bash
 vagrant up
 ```
 
-It will automatically deploy both VMs with the network configured properly nad HPC software installed.
+This command automatically deploys both VMs with properly configured networking and installed HPC software.
 
 ## HPC Access and Data Transfers
 
-To access the HPC systems at your institution, you'll need an account provided by your HPC authority.
+To access HPC systems, obtain an account from your HPC authority.
 
-### Accessing HPC systems on campus
+### Accessing HPC Systems on Campus
 
-- **Linux:**
-  - Open a terminal and type:
-    ```bash
-    ssh username@login-hostname
-    ```
+- **Linux**: Open a terminal and type: `ssh username@login-hostname`
+- **Windows**: Use an SSH client like PuTTY or MobaXterm.
 
-- **Windows:**
-  - Use an SSH client like PuTTY or MobaXterm.
+### Password-less Login
 
-### Password-less login
+Generate SSH keys using `ssh-keygen` and send the public key (`id_rsa.pub`) to your HPC authority.
 
-To enable passwordless logins, generate SSH keys using the following command:
-```bash
-ssh-keygen
-```
-Send the public key (`id_rsa.pub`) to your HPC authority.
+### Accessing HPC Systems Off Campus
 
-### Accessing HPC systems off campus
-
-Access from off-campus may require VPN services. You can use tools like Cisco AnyConnect Secure Mobility client or OpenVPN.
-
-- **Linux:**
-  ```bash
-  sudo apt-get update
-  sudo apt-get install openvpn
-  ```
-
-PS: Institutions have different access methods. Consult your HPC authority for assistance.
-
-###  Data Transfer
-
-On HPC systems, we can interact with the command line over SSH, create and move files and directories, run programs, and get output. But how do we:
-
-### FTP (File Transfer Protocol)
-
-You can use an FTP client like FileZilla. Connect to the server (e.g., hpc.yourinstitution.edu) on port 22, and authenticate with your username and password. All FTP communication to the HPC machine is secure.
-
-### Secure Copy (SCP)
-
-SCP is a secure, command-line file transfer method. It's non-interactive but scriptable.
+Access may require VPN services. Install OpenVPN on Linux:
 
 ```bash
-scp <file_name.ext> <user_name>@hpc.yourinstitution.edu:<dest_dir>
+sudo apt-get update
+sudo apt-get install openvpn
 ```
 
-### Getting files from the Internet
+Refer to your institution's access methods.
 
-To download files from the Internet, use `wget <URL_to_file>` at the command line while logged into the HPC machine via SSH. This downloads the file to your current working directory.
+### Data Transfer
 
-### Dealing with archived files
-
-Common archive formats include `.zip`, `.tar`, `.tgz`, `.gz`, and `.bz2`. Here's how to handle them:
-
-- Unzip a `.zip` file:
-  ```bash
-  unzip <file_name>.zip
-  ```
-
-- Extract a `.tar` file:
-  ```bash
-  tar xvf <file_name>.tar
-  ```
-
-- Extract a `.tgz` file:
-  ```bash
-  tar xzvf <file_name>.tgz
-  ```
-
-- Uncompress a `.gz` file:
-  ```bash
-  gunzip <file_name>.gz
-  ```
-
-- Decompress a `.bz2` file:
-  ```bash
-  bunzip2 <file_name>.bz2
-  ```
-
-## HPC Software Models
+- **FTP (File Transfer Protocol)**: Use an FTP client like FileZilla.
+- **Secure Copy (SCP)**: A command-line file transfer method.
+- **Getting Files from the Internet**: Use `wget <URL_to_file>`.
+- **Dealing with Archived Files**: Unzip or extract files using corresponding commands.
 
 ## HPC Software Modules
 
-On an HPC system, the user environment is configured using environment modules. These modules facilitate the availability of various software packages and versions, making it easier to run applications and submit jobs to the cluster.
-
-### What is an Environment Module?
-
-Environment modules enable the selective activation and deactivation of modifications to the user environment, allowing specific packages and versions to be accessible. They work by setting environment variables like PATH and LD_LIBRARY_PATH.
+Environment modules facilitate the availability of software packages and versions on HPC systems.
 
 ### Basic Module Commands
 
 - `module`: Print usage instructions.
 - `avail` or `av`: List available software modules.
-- `whatis`: List available modules with brief descriptions.
+- `whatis`: List modules with brief descriptions.
 - `load`: Add a module to your environment.
 - `unload`: Remove a module.
 - `purge`: Remove all modules.
 
 ### Using Modules in Batch Files
 
-To use a software package in a batch job script, simply specify `module load <package_name>`.
+Simply specify `module load <package_name>` in a batch job script.
 
 ### Creating Custom Modules
 
-You can define your own modules by loading `module load use.own`. This sets up the `$HOME/privatemodules` directory with an initial module file called `null` and changes the `MODULEPATH` environment variable to ensure that the `module` command looks for modules in your home directory.
-
-Refer to `man modulefile` for further information on writing your own modules.
-
-## Software list
+Define custom modules by loading `module load use.own`, enabling module configuration in your home directory.
 
 ## HPC Software List
 
-Below is a list of commonly available software on HPC systems, which may be loaded through software modules. Note that commercial software is marked with a © symbol.
+Below is a list of commonly available software on HPC systems:
 
 ### Programming Language Compilers
-- GNU compilers (e.g., gnu-c, gnu-cpp, Fortran)
+- GNU compilers
 - JDK (Java Development Kit)
-- Intel compilers (e.g., C++, Fortran) ©
+- Intel compilers ©
 - SolarisStudio
 
 ### Scripting
@@ -233,7 +152,7 @@ Below is a list of commonly available software on HPC systems, which may be load
 
 ## HPC Job and Scheduling JOB (PBS and Slurm)
 
-![image](https://github.com/glauberss2007/AI-hpc/assets/22028539/bcfe9068-ee59-47fa-adce-24c475428689)
+![HPC Job and Scheduling Diagram](https://github.com/glauberss2007/AI-hpc/assets/22028539/bcfe9068-ee59-47fa-adce-24c475428689)
 
 ## What is an HPC Job?
 
@@ -263,7 +182,6 @@ The first two, PBS and SLURM, are widely used!!
 - **Simple Linux Utility for Resource Management (SLURM)**: SLURM is another popular batch system designed for high-performance computing clusters. It offers robust job scheduling and workload management features, including job prioritization, fair resource allocation, and efficient job execution. SLURM is known for its scalability and flexibility, making it suitable for large-scale HPC environments.
 
 
-
 ## References
 
 - [How to Setup Slurm on Ubuntu 20.04](https://drtailor.medium.com/how-to-setup-slurm-on-ubuntu-20-04-for-single-node-work-scheduling-6cc909574365)
@@ -272,3 +190,4 @@ The first two, PBS and SLURM, are widely used!!
 - [Supercomputers: The Amazing Race](https://gordonbell.azurewebsites.net/MSR-TR-2015-2_Supercomputers-The_Amazing_Race_Bell.pdf)
 - [History of Supercomputers](https://www-users.york.ac.uk/~mijp1/teaching/4th_year_HPC/lecture_notes/History_of_Supercomputers.pdf)
 - [Top500 List](https://www.top500.org/lists/)
+
