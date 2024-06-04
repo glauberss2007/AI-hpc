@@ -2,19 +2,6 @@
 
 Welcome to the High Performance Computing (HPC) Systems project repository. The main goal of this project is to introduce you to HPC systems and their software stack. This repository is designed to help you utilize parallel and distributed programming, as well as computing resources, to solve complex problems using HPC systems and supercomputers. This knowledge can be applied in fields such as machine learning, deep learning, data science, big data, and more.
 
-## Project Overview
-### Topics Covered
-
-- **Supercomputing History and Examples:** Explore the history of supercomputing, examples of supercomputers, and the differences between supercomputers and HPC clusters.
-- **HPC Clusters:** Understand the components of an HPC cluster, including login nodes, compute nodes, master nodes, and storage nodes, as well as HPC networks.
-- **PBS (Portable Batch System):** Introduction to PBS, including basic commands (`qsub`, `qstat`, `qdel`, `qalter`), job states, variables, interactive jobs, arrays, and MATLAB examples.
-- **Slurm:** Learn Slurm commands, job submission, distributed MPI and GPU jobs, multi-threaded OpenMP jobs, interactive jobs, array jobs, and job dependencies.
-- **OpenMP:** Basics of OpenMP, clauses, worksharing constructs, "Hello World!" example, reduction, parallel `for` loop, section parallelization, and vector addition.
-- **MPI:** "Hello World!" example, send/receive, and `ping-pong`.
-- **GPU Programming - CUDA:** Beginner-friendly guide to GPUs and CUDA, including "Hello World!" example and memory models.
-- **AMD GPU and HIP:** Parallel programming on AMD GPUs using ROCm and HIP, from basic concepts to advanced implementations.
-- **AWS HPC:** Building and running HPC clusters on AWS, leveraging the elasticity and scalability of cloud infrastructure.
-
 ## HPC Architecture
 
 High Performance Computing (HPC) architecture integrates multiple computing resources to deliver high computational power. An HPC cluster consists of several components, each playing a vital role in ensuring efficient operation.
