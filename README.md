@@ -427,6 +427,353 @@ By setting job dependencies in Slurm, you can establish execution sequences and 
 
 ## PBS - Portable batch system
 
+PBS is a job scheduler that allows users to submit, monitor, and control compute jobs in a multi-user, multi-node HPC environment. It is designed to optimize the utilization of computing resources by handling job queuing and execution based on predefined policies and user specifications.
+
+## PBS Command Examples
+Here are some basic PBS commands to get you started:
+
+### PBS Basic Commands
+- `qsub`: Submits a job to the queue.
+- `qstat`: Displays the status of PBS jobs.
+- `qdel`: Deletes a job from the queue.
+- `qalter`: Modifies the attributes of a job.
+
+### PBS Command: qsub
+The `qsub` command is used to submit jobs to the PBS queue. Jobs can be submitted as scripts or as command-line arguments.
+
+### PBS Command: qstat
+The `qstat` command provides information about the current jobs in the queue. Use it to monitor job status and queue health.
+
+### PBS Command: qdel
+The `qdel` command removes a job from the queue. This is useful if you need to cancel a job that is no longer needed or was submitted incorrectly.
+
+### PBS Command: qalter
+The `qalter` command allows you to change the attributes of a job that has already been submitted. This includes changing resource requests or job priority.
+
+## PBS Job States
+Jobs in PBS can be in various states such as queued (Q), running (R), completed (C), or held (H).
+
+## PBS Job Variables
+PBS provides several environment variables that can be used within job scripts to access information about the job and the execution environment.
+
+## PBS Job Script Example
+Here's an example of a PBS job script that requests resources and executes a program:
+
+```bash
+#!/bin/bash
+#PBS -N my_job_name
+#PBS -l select=1:ncpus=8:mem=16gb
+#PBS -l walltime=02:00:00
+#PBS -j oe
+
+cd $PBS_O_WORKDIR
+./my_program
+```
+
+## PBS Interactive Jobs
+Interactive jobs allow you to work directly on a compute node, which is useful for debugging or interactive data analysis.
+
+## PBS Arrays
+Job arrays are a way to submit multiple similar jobs with a single `qsub` command. They are useful for running the same application with different inputs.
+
+Certainly! Below is a template for a `README.md` file that covers the topics you've listed:
+
+## Parallel Programming with OpenMP
+
+### Introduction to OpenMP
+
+OpenMP (Open Multi-Processing) is an application programming interface (API) that supports multi-platform shared memory multiprocessing programming in C, C++, and Fortran. It is designed for systems with multiple processors, cores, or computing threads.
+
+### OpenMP Components
+
+### Directives
+OpenMP directives are special pragmas that are inserted into the code to provide instructions for parallelization. They start with `#pragma omp` followed by the directive name and necessary clauses.
+
+### Routines
+OpenMP provides a set of runtime library routines for tasks such as setting the number of threads, initializing locks, etc.
+
+### Variables
+Environment variables in OpenMP are used to control the execution of parallel code, such as `OMP_NUM_THREADS` which sets the number of threads to use.
+
+### OpenMP Clauses
+
+Clauses are used with OpenMP directives to modify their behavior. Common clauses include `private`, `shared`, `reduction`, and `schedule`.
+
+### OpenMP - Worksharing Constructs
+
+Worksharing constructs are used to divide the execution of the code among the members of the team of threads. Constructs like `for`, `sections`, and `single` are commonly used.
+
+Hello World! Code Example
+
+```c
+#include <omp.h>
+#include <stdio.h>
+
+int main() {
+    #pragma omp parallel
+    {
+        int ID = omp_get_thread_num();
+        printf("hello(%d)", ID);
+        printf(" world(%d)\\n", ID);
+    }
+}
+```
+
+
+Compile the code with an OpenMP-enabled compiler using the `-fopenmp` flag and run the executable. You should see the "hello" and "world" messages printed by each thread.
+
+Reduction and Parallel `for-loop`
+
+```c
+#include <omp.h>
+#include <stdio.h>
+
+int main() {
+    int sum = 0;
+    #pragma omp parallel for reduction(+:sum)
+    for(int i = 0; i < 100; i++) {
+        sum += i;
+    }
+    printf("Sum: %d\\n", sum);
+}
+```
+
+Section Parallelization Example
+
+```c
+#include <omp.h>
+#include <stdio.h>
+
+int main() {
+    #pragma omp parallel sections
+    {
+        #pragma omp section
+        {
+            // Section 1
+        }
+        #pragma omp section
+        {
+            // Section 2
+        }
+    }
+}
+```
+
+OpenMP Vector Add Example
+
+```c
+#include <omp.h>
+#include <stdio.h>
+
+#define N 100000
+#define CHUNKSIZE 100
+
+int main() {
+    int i, chunk;
+    float a[N], b[N], c[N];
+
+    /* Some initializations */
+    for (i=0; i < N; i++)
+      a[i] = b[i] = i * 1.0;
+    chunk = CHUNKSIZE;
+
+    #pragma omp parallel for shared(a,b,c,chunk) private(i) schedule(static,chunk)
+    for (i=0; i < N; i++)
+      c[i] = a[i] + b[i];
+
+    return 0;
+}
+```
+
+Remember to replace the placeholder comments with your actual code sections and explanations as needed. This README.md file will serve as a comprehensive guide to the basics of OpenMP in your repository.
+
+## Parallel and Distributed Computing with MPI
+
+### Introduction to MPI
+
+MPI, or Message Passing Interface, is a standardized and portable message-passing system designed to function on a wide variety of parallel computing architectures. It enables the development of parallel applications across different platforms.
+
+### MPI Program Structure
+
+An MPI program structure typically consists of initialization, communication, and finalization. The program starts with `MPI_Init` and ends with `MPI_Finalize`. Between these, the program may use any MPI communication routines to exchange messages among processes.
+
+### MPI - Hello World! Example
+
+```c
+#include <mpi.h>
+#include <stdio.h>
+
+int main(int argc, char *argv[]) {
+    int world_size, world_rank;
+
+    MPI_Init(&argc, &argv);
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+
+    printf("Hello world from rank %d out of %d processors\\n", world_rank, world_size);
+
+    MPI_Finalize();
+    return 0;
+}
+```
+
+### MPI Hello World! Demonstration
+
+To run the MPI Hello World program:
+1. Compile the code using an MPI compiler, such as `mpicc`.
+2. Execute the program using `mpirun` or `mpiexec` with the desired number of processes.
+
+MPI Send and Receive operations are used for point-to-point communication between processes.
+
+MPI Send Example:
+
+```c
+MPI_Send(&data, count, MPI_INT, dest, tag, MPI_COMM_WORLD);
+```
+
+MPI Receive Example:
+
+```c
+MPI_Recv(&data, count, MPI_INT, source, tag, MPI_COMM_WORLD, &status);
+```
+
+Replace `data`, `count`, `dest`, `source`, and `tag` with appropriate values for your specific use case.
+
+Here's a comprehensive `README.md` template for your repository on data parallel programming with GPUs, focusing on Nvidia GPUs and CUDA:
+
+```markdown
+# Data Parallel Programming with GPUs
+
+## GPU Types (Nvidia)
+
+Nvidia offers a range of GPUs suitable for different data parallel programming needs, from consumer-grade graphics cards to professional and data center GPUs.
+
+## Introduction to CUDA
+
+CUDA (Compute Unified Device Architecture) is a parallel computing platform and application programming interface (API) model created by Nvidia. It allows software developers to use a CUDA-enabled graphics processing unit (GPU) for general purpose processing.
+
+## Introduction to GPGPU
+
+General-Purpose computing on Graphics Processing Units (GPGPU) is the use of a GPU to handle computation typically handled by the CPU.
+
+## What is CUDA?
+
+CUDA is Nvidia's ecosystem for developers to create dynamic parallel applications. It includes the toolkit, libraries, and resources to leverage Nvidia's GPUs' parallel compute power.
+
+## Install CUDA Toolkit and Run CUDA Codes (Windows)
+
+To install the CUDA Toolkit on Windows, download the installer from Nvidia's official website and follow the installation instructions. Once installed, you can compile and run CUDA codes using the Nvidia compiler `nvcc`.
+
+## GPGPU Schema
+
+The GPGPU schema involves the use of GPUs for tasks that require massive parallelism, such as matrix operations, simulations, and deep learning.
+
+## GPGPU Software Layer
+
+The software layer for GPGPU includes the CUDA Toolkit, which provides necessary libraries and drivers to develop and run programs on Nvidia GPUs.
+
+## CUDA Device, Thread, Blocks, and Grids
+
+- **Device**: The CUDA-capable GPU.
+- **Thread**: The basic unit of execution in CUDA, which executes a kernel.
+- **Blocks**: A group of threads that can cooperate among themselves through shared memory.
+- **Grids**: An array of thread blocks that execute a kernel across a set of data.
+
+## CUDA Grid Organisation and Memory Hierarchy
+
+CUDA organizes grids into blocks and threads hierarchically, with each level having its own memory space:
+- **Registers**: Fastest, private to each thread.
+- **Shared Memory**: Accessible by all threads within the same block.
+- **Global Memory**: Accessible by all threads and host (CPU).
+
+## CUDA - Hello World! Example Code
+
+```c
+#include <stdio.h>
+
+__global__ void helloCUDA(){
+    printf("Hello from CUDA\\n");
+}
+
+int main() {
+    helloCUDA<<<1,1>>>();
+    cudaDeviceSynchronize();
+    return 0;
+}
+```
+
+## CUDA Kernel Function Explained
+
+A CUDA kernel function is executed N times in parallel by N different CUDA threads, as specified when invoking the function with the `<<<...>>>` syntax.
+
+## CUDA Variable Addition on the Device (1 Block and 1 Thread)
+
+```c
+__global__ void add(int *a, int *b, int *c) {
+    *c = *a + *b;
+}
+
+int main() {
+    int a, b, c;          // host copies of a, b, c
+    int *d_a, *d_b, *d_c; // device copies of a, b, c
+    int size = sizeof(int);
+
+    // Allocate space for device copies of a, b, c
+    cudaMalloc((void **)&d_a, size);
+    cudaMalloc((void **)&d_b, size);
+    cudaMalloc((void **)&d_c, size);
+
+    // Setup input values
+    a = 2;
+    b = 7;
+
+    // Copy inputs to device
+    cudaMemcpy(d_a, &a, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_b, &b, size, cudaMemcpyHostToDevice);
+
+    // Launch add() kernel on GPU with one block and one thread
+    add<<<1,1>>>(d_a, d_b, d_c);
+
+    // Copy result back to host
+    cudaMemcpy(&c, d_c, size, cudaMemcpyDeviceToHost);
+
+    // Cleanup
+    cudaFree(d_a); cudaFree(d_b); cudaFree(d_c);
+
+    printf("Result: %d\\n", c);
+    return 0;
+}
+```
+
+## CUDA Vector Addition (using N Blocks)
+
+```c
+// Define the number of elements in the vector
+#define N 512
+
+__global__ void vectorAdd(int *a, int *b, int *c) {
+    int index = blockIdx.x;
+    if (index < N)
+        c[index] = a[index] + b[index];
+}
+
+// The rest of the host code remains the same as the previous example,
+// but the kernel launch will change to accommodate N blocks:
+vectorAdd<<<N,1>>>(d_a, d_b, d_c);
+```
+
+## CUDA Vector Addition Demonstration
+
+Compile the CUDA code using `nvcc` and run the executable. The output will display the result of the vector addition performed on the GPU.
+
+Remember to replace the placeholder comments with your actual code sections and explanations as needed. This README.md file will serve as a comprehensive guide to the basics of CUDA and GPU programming in your repository.
+```
+
+This template provides a structured approach to documenting CUDA and GPU programming concepts in your project. Adjust the content as necessary to fit the specifics of your work!
+
+Fonte: conversa com o Copilot, 05/06/2024
+(1) github.com. https://github.com/Ageos-GeoAI/Nvidia-Cuda/tree/907414c63c456d65362ee2e49b84f2a3fd3db063/README.md.
+
 ## References
 
 - [How to Setup Slurm on Ubuntu 20.04](https://drtailor.medium.com/how-to-setup-slurm-on-ubuntu-20-04-for-single-node-work-scheduling-6cc909574365)
