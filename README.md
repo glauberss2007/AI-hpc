@@ -14,18 +14,12 @@ High Performance Computing (HPC) architecture integrates multiple computing reso
 2. **Login Nodes**: Serve as the user interface for accessing the HPC system, where users submit jobs, compile code, and manage data.
 3. **Management Node (Master/Head Node)**: Manages cluster operations, including job scheduling, resource allocation, and overall cluster management.
 4. **Storage Nodes**: Dedicated to storing data used and produced by compute tasks, often utilizing high-speed storage solutions.
-5. **Ethernet Switches**: Facilitate node-to-node communication at speeds of 1/10 GB.
-6. **Infiniband Switches**: Enable faster inter-node communication at speeds of 56/100 GB, crucial for MPI-enabled software.
 
 ### Setting Up an HPC Environment Using VMWare (Demo)
 
-To create a small HPC environment, deploy 2 virtual Linux servers named "hpc-head" and "node001" using the provided Vagrant file:
+To configure a simple ENV considering a master node and workes node, follow the steps in "https://github.com/mknoxnv/ubuntu-slurm".
 
-```bash
-vagrant up
-```
-
-This command automatically deploys both VMs with properly configured networking and installed HPC software.
+PS: The folder vagrant in this repository has vagrant files and scripts to configure an small env based on 1 master and 2 workes.
 
 ## HPC Access and Data Transfers
 
