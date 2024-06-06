@@ -1,0 +1,29 @@
+# Configuration for Vagrant
+Vagrant.configure("2") do |config|
+  
+    # Define the configuration for the Slurm controller node
+    config.vm.define "slurm-ctrl" do |node|
+      node.vm.box = "ubuntu/bionic64"                  # Base box for the VM (Ubuntu 18.04)
+      node.vm.hostname = "slurm-ctrl"                  # Hostname of the VM
+      node.vm.network "private_network", ip: "192.168.33.10"  # Private IP address for communication
+      node.vm.provision "shell", path: "provision_slurm_ctrl.sh"  # Provisioning script for setup
+    end
+  
+    # Define the configuration for the first compute node
+    config.vm.define "compute-node1" do |node|
+      node.vm.box = "ubuntu/bionic64"                  # Base box for the VM (Ubuntu 18.04)
+      node.vm.hostname = "compute-node1"               # Hostname of the VM
+      node.vm.network "private_network", ip: "192.168.33.11"  # Private IP address for communication
+      node.vm.provision "shell", path: "provision_compute_node.sh"  # Provisioning script for setup
+    end
+  
+    # Define the configuration for the second compute node
+    config.vm.define "compute-node2" do |node|
+      node.vm.box = "ubuntu/bionic64"                  # Base box for the VM (Ubuntu 18.04)
+      node.vm.hostname = "compute-node2"               # Hostname of the VM
+      node.vm.network "private_network", ip: "192.168.33.12"  # Private IP address for communication
+      node.vm.provision "shell", path: "provision_compute_node.sh"  # Provisioning script for setup
+    end
+  
+  end
+  
