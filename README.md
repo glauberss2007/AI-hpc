@@ -1,6 +1,6 @@
 # High Performance Computing (HPC) Systems Project
 
-Welcome to the High Performance Computing (HPC) Systems project repository. This project aims to introduce you to HPC systems and their software stack, empowering you to leverage parallel and distributed programming along with computing resources to solve complex problems across various domains such as machine learning, deep learning, data science, big data, and more.
+This project aims to introduce you to HPC systems and their software stack, empowering you to leverage parallel and distributed programming along with computing resources to solve complex problems across various domains such as machine learning, deep learning, data science, big data, and more.
 
 ## HPC Architecture
 
@@ -20,37 +20,6 @@ High Performance Computing (HPC) architecture integrates multiple computing reso
 To configure a simple ENV considering a master node and workes node, follow the steps in "https://github.com/mknoxnv/ubuntu-slurm".
 
 PS: The folder vagrant in this repository has vagrant files and scripts to configure an small env based on 1 master and 2 workes.
-
-## HPC Access and Data Transfers
-
-To access HPC systems, obtain an account from your HPC authority.
-
-### Accessing HPC Systems on Campus
-
-- **Linux**: Open a terminal and type: `ssh username@login-hostname`
-- **Windows**: Use an SSH client like PuTTY or MobaXterm.
-
-### Password-less Login
-
-Generate SSH keys using `ssh-keygen` and send the public key (`id_rsa.pub`) to your HPC authority.
-
-### Accessing HPC Systems Off Campus
-
-Access may require VPN services. Install OpenVPN on Linux:
-
-```bash
-sudo apt-get update
-sudo apt-get install openvpn
-```
-
-Refer to your institution's access methods.
-
-### Data Transfer
-
-- **FTP (File Transfer Protocol)**: Use an FTP client like FileZilla.
-- **Secure Copy (SCP)**: A command-line file transfer method.
-- **Getting Files from the Internet**: Use `wget <URL_to_file>`.
-- **Dealing with Archived Files**: Unzip or extract files using corresponding commands.
 
 ## HPC Software Modules
 
@@ -73,77 +42,6 @@ Simply specify `module load <package_name>` in a batch job script.
 
 Define custom modules by loading `module load use.own`, enabling module configuration in your home directory.
 
-## HPC Software List
-
-Below is a list of commonly available software on HPC systems:
-
-### Programming Language Compilers
-- GNU compilers
-- JDK (Java Development Kit)
-- Intel compilers ©
-- SolarisStudio
-
-### Scripting
-- Guile
-- Perl
-- Python
-- Tcl/Tk
-- Bash
-- Zsh
-
-### File Formats and Data Management
-- HDF (Hierarchical Data Format)
-- netCDF (Network Common Data Form)
-
-### Astronomy and Astrophysics
-- IDL ©
-- Tecplot ©
-- DS9
-- IRAF
-- Figaro
-- Rebound
-
-### CFD & Engineering and Modeling
-- COMSOL ©
-- ANSYS Fluent software ©
-- APSIM
-- Cantera
-- Converge CFG
-- Eilmer
-
-### Climate Modeling
-- GMT (Generic Mapping Tools)
-- Opengrads
-
-### Mathematics and Statistics
-- Matlab ©
-- R and RStudio
-- Scilab
-- Numpy
-- Scipy
-
-### Graphics
-- Ferret
-- Gnuplot
-- Paraview
-- Atlas
-- NCL (NCAR Command Language)
-- Wine (Wine Is Not an Emulator)
-- NetworkX
-- Gephi
-- yED
-
-### Parallel Programming Libraries/Tools
-- Intel MPI ©
-- Open MPI
-- MPICH
-- CUDA Toolkit
-
-### Schedulers (any one)
-- PBS (Portable Batch System)
-- PBS Pro
-- Slurm
-
 ## HPC Job and Scheduling JOB (PBS and Slurm)
 
 ![HPC Job and Scheduling Diagram](https://github.com/glauberss2007/AI-hpc/assets/22028539/bcfe9068-ee59-47fa-adce-24c475428689)
@@ -157,19 +55,6 @@ In the realm of High-Performance Computing (HPC), jobs refer to commands we wish
 The batch system is a program, typically residing on the head node of an HPC cluster, that allows users to add and remove jobs from the queue and monitor the queue. It is driven by scripts or command-line inputs.
 
 Job schedulers manage job queues and schedule jobs from the queue as sufficient resources become available (i.e., when cluster compute nodes are idle). Users typically do not interact directly with schedulers.
-
-#### Common Cluster Batch Systems:
-
-- Portable Batch System (PBS)
-- Simple Linux Utility for Resource Management (SLURM)
-- Moab
-- Univa Grid Engine
-- LoadLeveler
-- Condor
-- OpenLava
-- IBM’s Platform LSF
-
-The first two, PBS and SLURM, are widely used!!
 
 - **Portable Batch System (PBS)**: PBS is a widely used batch system that provides powerful job management and scheduling capabilities. It allows users to submit, monitor, and manage jobs efficiently. PBS supports various job types, resource requests, and job dependencies.
 
@@ -186,10 +71,6 @@ Slurm serves three primary functions:
 1. **Resource Allocation:** Allocates exclusive and/or non-exclusive access to computing resources (nodes) for users over a specified duration.
 2. **Job Execution:** Provides a framework for starting, executing, and monitoring parallel jobs (e.g., MPI) on allocated nodes.
 3. **Contention Management:** Arbitrates contention for resources by managing a queue of pending jobs.
-
-### History
-
-Initially developed in the 2010s, Slurm emerged from a collaborative effort involving Lawrence Livermore National Laboratory, SchedMD, Linux NetworX, Hewlett-Packard, and Groupe Bull. It was inspired by the closed-source Quadrics RMS and shares similar syntax. The name "Slurm" is a playful reference to a fictional soda in the TV show Futurama.
 
 ### Components
 
@@ -432,24 +313,6 @@ Here are some basic PBS commands to get you started:
 - `qdel`: Deletes a job from the queue.
 - `qalter`: Modifies the attributes of a job.
 
-### PBS Command: qsub
-The `qsub` command is used to submit jobs to the PBS queue. Jobs can be submitted as scripts or as command-line arguments.
-
-### PBS Command: qstat
-The `qstat` command provides information about the current jobs in the queue. Use it to monitor job status and queue health.
-
-### PBS Command: qdel
-The `qdel` command removes a job from the queue. This is useful if you need to cancel a job that is no longer needed or was submitted incorrectly.
-
-### PBS Command: qalter
-The `qalter` command allows you to change the attributes of a job that has already been submitted. This includes changing resource requests or job priority.
-
-## PBS Job States
-Jobs in PBS can be in various states such as queued (Q), running (R), completed (C), or held (H).
-
-## PBS Job Variables
-PBS provides several environment variables that can be used within job scripts to access information about the job and the execution environment.
-
 ## PBS Job Script Example
 Here's an example of a PBS job script that requests resources and executes a program:
 
@@ -469,8 +332,6 @@ Interactive jobs allow you to work directly on a compute node, which is useful f
 
 ## PBS Arrays
 Job arrays are a way to submit multiple similar jobs with a single `qsub` command. They are useful for running the same application with different inputs.
-
-Certainly! Below is a template for a `README.md` file that covers the topics you've listed:
 
 ## Parallel Programming with OpenMP
 
@@ -515,71 +376,6 @@ int main() {
 
 
 Compile the code with an OpenMP-enabled compiler using the `-fopenmp` flag and run the executable. You should see the "hello" and "world" messages printed by each thread.
-
-Reduction and Parallel `for-loop`
-
-```c
-#include <omp.h>
-#include <stdio.h>
-
-int main() {
-    int sum = 0;
-    #pragma omp parallel for reduction(+:sum)
-    for(int i = 0; i < 100; i++) {
-        sum += i;
-    }
-    printf("Sum: %d\\n", sum);
-}
-```
-
-Section Parallelization Example
-
-```c
-#include <omp.h>
-#include <stdio.h>
-
-int main() {
-    #pragma omp parallel sections
-    {
-        #pragma omp section
-        {
-            // Section 1
-        }
-        #pragma omp section
-        {
-            // Section 2
-        }
-    }
-}
-```
-
-OpenMP Vector Add Example
-
-```c
-#include <omp.h>
-#include <stdio.h>
-
-#define N 100000
-#define CHUNKSIZE 100
-
-int main() {
-    int i, chunk;
-    float a[N], b[N], c[N];
-
-    /* Some initializations */
-    for (i=0; i < N; i++)
-      a[i] = b[i] = i * 1.0;
-    chunk = CHUNKSIZE;
-
-    #pragma omp parallel for shared(a,b,c,chunk) private(i) schedule(static,chunk)
-    for (i=0; i < N; i++)
-      c[i] = a[i] + b[i];
-
-    return 0;
-}
-```
-
-Remember to replace the placeholder comments with your actual code sections and explanations as needed. This README.md file will serve as a comprehensive guide to the basics of OpenMP in your repository.
 
 ## Parallel and Distributed Computing with MPI
 
@@ -633,147 +429,18 @@ MPI_Recv(&data, count, MPI_INT, source, tag, MPI_COMM_WORLD, &status);
 
 Replace `data`, `count`, `dest`, `source`, and `tag` with appropriate values for your specific use case.
 
-Here's a comprehensive `README.md` template for your repository on data parallel programming with GPUs, focusing on Nvidia GPUs and CUDA:
+Got it! Let's streamline it for a more concise README.md:
 
-```markdown
-# Data Parallel Programming with GPUs
+---
 
-## GPU Types (Nvidia)
+## GPU Programming with CUDA
 
-Nvidia offers a range of GPUs suitable for different data parallel programming needs, from consumer-grade graphics cards to professional and data center GPUs.
+Basics of GPU programming, particularly focusing on Nvidia GPUs and CUDA. This README covers essential concepts and includes practical examples to get you started.
 
-## Introduction to CUDA
+### Installation
 
-CUDA (Compute Unified Device Architecture) is a parallel computing platform and application programming interface (API) model created by Nvidia. It allows software developers to use a CUDA-enabled graphics processing unit (GPU) for general purpose processing.
+Instructions for installing the CUDA Toolkit on Windows are provided. Follow the steps to set up your development environment.
 
-## Introduction to GPGPU
+### Examples
 
-General-Purpose computing on Graphics Processing Units (GPGPU) is the use of a GPU to handle computation typically handled by the CPU.
-
-## What is CUDA?
-
-CUDA is Nvidia's ecosystem for developers to create dynamic parallel applications. It includes the toolkit, libraries, and resources to leverage Nvidia's GPUs' parallel compute power.
-
-## Install CUDA Toolkit and Run CUDA Codes (Windows)
-
-To install the CUDA Toolkit on Windows, download the installer from Nvidia's official website and follow the installation instructions. Once installed, you can compile and run CUDA codes using the Nvidia compiler `nvcc`.
-
-## GPGPU Schema
-
-The GPGPU schema involves the use of GPUs for tasks that require massive parallelism, such as matrix operations, simulations, and deep learning.
-
-## GPGPU Software Layer
-
-The software layer for GPGPU includes the CUDA Toolkit, which provides necessary libraries and drivers to develop and run programs on Nvidia GPUs.
-
-## CUDA Device, Thread, Blocks, and Grids
-
-- **Device**: The CUDA-capable GPU.
-- **Thread**: The basic unit of execution in CUDA, which executes a kernel.
-- **Blocks**: A group of threads that can cooperate among themselves through shared memory.
-- **Grids**: An array of thread blocks that execute a kernel across a set of data.
-
-## CUDA Grid Organisation and Memory Hierarchy
-
-CUDA organizes grids into blocks and threads hierarchically, with each level having its own memory space:
-- **Registers**: Fastest, private to each thread.
-- **Shared Memory**: Accessible by all threads within the same block.
-- **Global Memory**: Accessible by all threads and host (CPU).
-
-## CUDA - Hello World! Example Code
-
-```c
-#include <stdio.h>
-
-__global__ void helloCUDA(){
-    printf("Hello from CUDA\\n");
-}
-
-int main() {
-    helloCUDA<<<1,1>>>();
-    cudaDeviceSynchronize();
-    return 0;
-}
-```
-
-## CUDA Kernel Function Explained
-
-A CUDA kernel function is executed N times in parallel by N different CUDA threads, as specified when invoking the function with the `<<<...>>>` syntax.
-
-## CUDA Variable Addition on the Device (1 Block and 1 Thread)
-
-```c
-__global__ void add(int *a, int *b, int *c) {
-    *c = *a + *b;
-}
-
-int main() {
-    int a, b, c;          // host copies of a, b, c
-    int *d_a, *d_b, *d_c; // device copies of a, b, c
-    int size = sizeof(int);
-
-    // Allocate space for device copies of a, b, c
-    cudaMalloc((void **)&d_a, size);
-    cudaMalloc((void **)&d_b, size);
-    cudaMalloc((void **)&d_c, size);
-
-    // Setup input values
-    a = 2;
-    b = 7;
-
-    // Copy inputs to device
-    cudaMemcpy(d_a, &a, size, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_b, &b, size, cudaMemcpyHostToDevice);
-
-    // Launch add() kernel on GPU with one block and one thread
-    add<<<1,1>>>(d_a, d_b, d_c);
-
-    // Copy result back to host
-    cudaMemcpy(&c, d_c, size, cudaMemcpyDeviceToHost);
-
-    // Cleanup
-    cudaFree(d_a); cudaFree(d_b); cudaFree(d_c);
-
-    printf("Result: %d\\n", c);
-    return 0;
-}
-```
-
-## CUDA Vector Addition (using N Blocks)
-
-```c
-// Define the number of elements in the vector
-#define N 512
-
-__global__ void vectorAdd(int *a, int *b, int *c) {
-    int index = blockIdx.x;
-    if (index < N)
-        c[index] = a[index] + b[index];
-}
-
-// The rest of the host code remains the same as the previous example,
-// but the kernel launch will change to accommodate N blocks:
-vectorAdd<<<N,1>>>(d_a, d_b, d_c);
-```
-
-## CUDA Vector Addition Demonstration
-
-Compile the CUDA code using `nvcc` and run the executable. The output will display the result of the vector addition performed on the GPU.
-
-Remember to replace the placeholder comments with your actual code sections and explanations as needed. This README.md file will serve as a comprehensive guide to the basics of CUDA and GPU programming in your repository.
-```
-
-This template provides a structured approach to documenting CUDA and GPU programming concepts in your project. Adjust the content as necessary to fit the specifics of your work!
-
-Fonte: conversa com o Copilot, 05/06/2024
-(1) github.com. https://github.com/Ageos-GeoAI/Nvidia-Cuda/tree/907414c63c456d65362ee2e49b84f2a3fd3db063/README.md.
-
-## References
-
-- [How to Setup Slurm on Ubuntu 20.04](https://drtailor.medium.com/how-to-setup-slurm-on-ubuntu-20-04-for-single-node-work-scheduling-6cc909574365)
-- [Udemy HPC Course](https://www.udemy.com/course/learn-to-use-hpc-systems-and-supercomputers)
-- [Slurm Quickstart](https://slurm.schedmd.com/quickstart.html)
-- [Supercomputers: The Amazing Race](https://gordonbell.azurewebsites.net/MSR-TR-2015-2_Supercomputers-The_Amazing_Race_Bell.pdf)
-- [History of Supercomputers](https://www-users.york.ac.uk/~mijp1/teaching/4th_year_HPC/lecture_notes/History_of_Supercomputers.pdf)
-- [Top500 List](https://www.top500.org/lists/)
-
+Explore simple CUDA examples, including "Hello World!" and basic variable addition on the device. Understand CUDA kernel functions and how to launch them.
