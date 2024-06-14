@@ -17,9 +17,8 @@ High Performance Computing (HPC) architecture integrates multiple computing reso
 
 ### Setting Up an HPC Environment Using VMWare (Demo)
 
-To configure a simple ENV considering a master node and workes node, follow the steps in "https://github.com/mknoxnv/ubuntu-slurm".
-
-PS: The folder vagrant in this repository has vagrant files and scripts to configure an small env based on 1 master and 2 workes.
+To setup the environment follows the link: https://github.com/glauberss2007/AI-hpc-install-config
+TODO: (Automate it using ansible or puppet)
 
 ## HPC Software Modules
 
